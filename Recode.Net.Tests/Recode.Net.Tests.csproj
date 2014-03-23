@@ -60,7 +60,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyTests.cs" />
+    <Compile Include="FilteredCollectionTests.cs" />
+    <Compile Include="MergedCollectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeFactoryTests.cs" />
     <Compile Include="TypeTests.cs" />
   </ItemGroup>
   <ItemGroup>

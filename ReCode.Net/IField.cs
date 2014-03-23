@@ -22,7 +22,7 @@ namespace ReCode
     /// <summary>
     /// Defines an interface for an object that defines an editable field.
     /// </summary>
-    public interface IField : IMember, IAccess
+    public interface IField : IStorageMember, IAccess, IEquatable<IField>
     {
         /// <summary>
         /// Gets or sets the type of the field.

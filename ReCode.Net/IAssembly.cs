@@ -19,7 +19,42 @@ using System.Text;
 
 namespace ReCode
 {
-    public interface IAssembly
+    /// <summary>
+    /// Defines an interface for an assembly.
+    /// </summary>
+    public interface IAssembly : IEquatable<IAssembly>
     {
+        /// <summary>
+        /// Gets or sets the name of the assembly.
+        /// </summary>
+        string Name
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets the full name of the assembly.
+        /// </summary>
+        string FullName
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of modules that the assembly contains.
+        /// </summary>
+        ICollection<IModule> Modules
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the collection of types that belong to this assembly.
+        /// </summary>
+        IDictionary<string, IType> Types
+        {
+            get;
+        }
     }
 }

@@ -20,32 +20,32 @@ using System.Text;
 namespace ReCode
 {
     /// <summary>
-    /// Defines an interface for an object that contains a set of fields.
+    /// Defines an interface for a module that belongs to an assembly.
     /// </summary>
-    public interface IFieldCollection
+    public interface IModule : IEquatable<IModule>
     {
         /// <summary>
-        /// Adds the given field to the collection.
+        /// Gets the assembly that this module belongs to.
         /// </summary>
-        /// <param name="field">The field to add to the collection.</param>
-        void Add(IField field);
-
-        /// <summary>
-        /// Removes the field with the given name from the collection.
-        /// </summary>
-        /// <param name="fieldName">The name of the field to remove from the collection.</param>
-        /// <returns></returns>
-        bool Remove(string fieldName);
-
-        /// <summary>
-        /// Gets or sets the field with the given name to the given value.
-        /// </summary>
-        /// <param name="name">The name of the field to retrieve.</param>
-        /// <returns>Returns the <see cref="ReCode.IField"/> object with the given name.</returns>
-        IField this[string name]
+        IAssembly Assembly
         {
             get;
-            set;
+        }
+
+        /// <summary>
+        /// Gets the collection of types that this module contains.
+        /// </summary>
+        IDictionary<string, IType> Types
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the fully qualified name of the module.
+        /// </summary>
+        string FullName
+        {
+            get;
         }
     }
 }

@@ -14,6 +14,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,21 +27,47 @@ namespace ReCode
     public interface IType
     {
         /// <summary>
-        /// Gets or sets the collection of fields that the type contains.
+        /// Gets the full name of the type.
         /// </summary>
-        IFieldCollection Fields
+        string FullName
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of this type.
+        /// </summary>
+        string Name
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the assembly that this type lives in.
+        /// Gets or sets the collection of fields that this type contains.
         /// </summary>
-        IAssembly Assembly
+        IDictionary<string, IField> Fields
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets or sets the collection of members that this type contains.
+        /// </summary>
+        ICollection<IMember> Members
         {
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets the module that this type lives in.
+        /// </summary>
+        IModule Module
+        {
+            get;
+            set;
+        }
+
     }
 }

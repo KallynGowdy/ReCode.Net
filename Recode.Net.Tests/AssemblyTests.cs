@@ -12,28 +12,28 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-using ReCode.Factories;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReCode
+namespace ReCode.Tests
 {
-    /// <summary>
-    /// Defines a static class that contains extension methods for <see cref="System.Type"/> objects.
-    /// </summary>
-    public static class TypeExtensions
+    [TestFixture]
+    public class AssemblyTests
     {
-        /// <summary>
-        /// Begins editing the given type.
-        /// </summary>
-        /// <param name="type">The type to edit.</param>
-        /// <returns>Returns a new <see cref="ReCode.IType"/> object that can be edited.</returns>
-        public static IType Edit(this Type type)
+        [Test]
+        public void TestRetrieveType()
         {
-            return TypeFactory.Instance.RetrieveInstanceForType(type);
+            IAssembly assembly = Assembly.GetExecutingAssembly().Edit();
+
+            IType t = assembly.Types["AssemblyTests"];
+            Assert.NotNull(t);
+            
         }
+
     }
 }

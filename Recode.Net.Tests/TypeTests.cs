@@ -48,12 +48,87 @@ namespace ReCode.Tests
             }
         }
 
+        public class AlternateTestClass
+        {
+
+        }
+
         [Test]
         public void TestManipulateFieldAccess()
         {
             IType testType = typeof(TestClass).Edit();
 
+            Assert.AreEqual(AccessModifier.Private, testType.Fields["privateInt"].Access);
+
             testType.Fields["privateInt"].Access = AccessModifier.Public;
+
+            Assert.AreEqual(AccessModifier.Public, testType.Fields["privateInt"].Access);
+
+            //Reset changes
+            testType.Fields["privateInt"].Access = AccessModifier.Private;
+        }
+
+        [Test]
+        public void TestManipulateFieldName()
+        {
+            IType testType = typeof(TestClass).Edit();
+
+            Assert.NotNull(testType.Fields["privateInt"]);
+
+            Assert.AreEqual("privateInt", testType.Fields["privateInt"].Name);
+
+            testType.Fields["privateInt"].Name = "reallyPrivateInt";
+
+            Assert.Null(testType.Fields["privateInt"]);
+
+            Assert.AreEqual("reallyPrivateInt", testType.Fields["reallyPrivateInt"].Name);
+
+            //Reset changes
+            testType.Fields["reallyPrivateInt"].Name = "privateInt";
+        }
+
+        [Test]
+        public void TestManipulateFieldType()
+        {
+            IType testType = typeof(TestClass).Edit();
+
+            IField testTypeField = testType.Fields["privateInt"];
+
+            Assert.NotNull(testTypeField);
+
+            Assert.AreEqual(typeof(int).Edit(), testTypeField.FieldType);
+
+            testTypeField.FieldType = typeof(float).Edit();
+
+            Assert.AreEqual(typeof(float).Edit(), testTypeField.FieldType);
+
+            //Reset changes
+            testTypeField.FieldType = typeof(int).Edit();
+        }
+
+        [Test]
+        public void TestManipulateFieldDeclaringType()
+        {
+            IType testType = typeof(TestClass).Edit();
+
+            IField field = testType.Fields["privateInt"];
+
+            Assert.NotNull(field);
+
+            Assert.AreEqual(testType, field.DeclaringType);
+
+            field.DeclaringType = typeof(AlternateTestClass).Edit();
+
+            IField goneField = testType.Fields["privateInt"];
+
+            Assert.Null(goneField);
+
+            IType alternateType = typeof(AlternateTestClass).Edit();
+
+            Assert.NotNull(alternateType.Fields["privateInt"]);
+            
+            //Reset changes
+            field.DeclaringType = testType;
         }
     }
 }

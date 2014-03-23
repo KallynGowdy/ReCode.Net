@@ -34,6 +34,14 @@ namespace ReCode
         }
 
         /// <summary>
+        /// Gets the full name of the member.
+        /// </summary>
+        string FullName
+        {
+            get;
+        }
+
+        /// <summary>
         /// Gets or sets the type that declares this member.
         /// </summary>
         IType DeclaringType

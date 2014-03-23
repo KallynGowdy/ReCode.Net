@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using NUnit.Framework;
 using ReCode.Factories;
 using System;
 using System.Collections.Generic;
@@ -19,21 +20,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReCode
+namespace ReCode.Tests
 {
-    /// <summary>
-    /// Defines a static class that contains extension methods for <see cref="System.Type"/> objects.
-    /// </summary>
-    public static class TypeExtensions
+    [TestFixture]
+    public class TypeFactoryTests
     {
-        /// <summary>
-        /// Begins editing the given type.
-        /// </summary>
-        /// <param name="type">The type to edit.</param>
-        /// <returns>Returns a new <see cref="ReCode.IType"/> object that can be edited.</returns>
-        public static IType Edit(this Type type)
+        [TestCase(typeof(int))]
+        public void TestRetrieveSameInstance(Type type)
         {
-            return TypeFactory.Instance.RetrieveInstanceForType(type);
+            TypeFactory factory = TypeFactory.Instance;
+
+            Assert.NotNull(factory);
+
+            IType t1 = factory.RetrieveInstanceForType(type);
+
+            Assert.NotNull(t1);
+
+            IType t2 = factory.RetrieveInstanceForType(type);
+
+            Assert.NotNull(t2);
+
+            Assert.AreSame(t1, t2);
         }
     }
 }
