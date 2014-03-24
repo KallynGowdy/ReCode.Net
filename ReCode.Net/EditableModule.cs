@@ -62,7 +62,7 @@ namespace ReCode
                 throw new ArgumentNullException("module");
             }
             assembly = new Lazy<IAssembly>(() => module.Assembly.Edit());
-            types = new Lazy<IDictionary<string, IType>>(() => new DictionaryCollection<string, IType>(t => t.Name, module.GetTypes().Select(t => t.Edit()).ToArray()));
+            types = new Lazy<IDictionary<string, IType>>(() => new DictionaryCollection<string, IType>(t => t.Name, module.GetTypes().Select(t => t.Edit()).ToList()));
             FullName = module.FullyQualifiedName;
         }
 

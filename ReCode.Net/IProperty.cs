@@ -20,15 +20,11 @@ using System.Text;
 namespace ReCode
 {
     /// <summary>
-    /// Defines a list of values that define the different possible access modifiers that a member can have.
+    /// Defines an interface for an editable property.
     /// </summary>
-    public enum AccessModifier
+    public interface IProperty : IStorageMember, IAccess, IEquatable<IProperty>
     {
-        Private = 0,
-        ProtectedAndInternal = 1,
-        Internal = 2,
-        Protected = 3,
-        ProtectedOrInternal = 4,
-        Public = 5,
+
+
     }
 }

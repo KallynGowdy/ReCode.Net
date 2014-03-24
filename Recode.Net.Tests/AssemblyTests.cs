@@ -32,8 +32,8 @@ namespace ReCode.Tests
 
             IType t = assembly.Types["AssemblyTests"];
             Assert.NotNull(t);
-            
         }
+
 
     }
 }

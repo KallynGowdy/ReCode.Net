@@ -72,10 +72,14 @@
     <Compile Include="IField.cs" />
     <Compile Include="IMember.cs" />
     <Compile Include="IModule.cs" />
+    <Compile Include="IProperty.cs" />
     <Compile Include="IStorageMember.cs" />
     <Compile Include="IType.cs" />
     <Compile Include="FieldInfoExtensions.cs" />
+    <Compile Include="MethodInfoExtensions.cs" />
     <Compile Include="ObjectExtensions.cs" />
+    <Compile Include="EditableStorageMemberBase.cs" />
+    <Compile Include="PropertyInfoExtensions.cs" />
     <Compile Include="System.Collections.ObjectModel\DictionaryCollection.cs" />
     <Compile Include="System.Collections.ObjectModel\MergedCollection.cs" />
     <Compile Include="System.Collections.ObjectModel\ObservableDictionary.cs" />

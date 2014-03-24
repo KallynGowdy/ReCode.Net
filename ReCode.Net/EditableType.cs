@@ -28,7 +28,14 @@ namespace ReCode
     /// </summary>
     public class EditableType : IType
     {
-        Type internalType;
+
+        private static BindingFlags memberFlags
+        {
+            get
+            {
+                return BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditableType"/> class.
@@ -36,20 +43,30 @@ namespace ReCode
         /// <param name="type">The type to edit.</param>
         public EditableType(Type type)
         {
-            internalType = type;
+            fields = new Lazy<DictionaryCollection<string, IField>>
+            (
+                () => new DictionaryCollection<string, IField>(f => f.Name, new FilteredCollection<IField, IMember>(Members))
+            );
+
+            members = new Lazy<ICollection<IMember>>
+            (
+                () =>
+                {
+                    List<IMember> mems = new List<IMember>();
+                    mems.AddRange(type.GetFields(memberFlags).Select(f => FieldFactory.Instance.RetrieveInstanceForField(f)));
+                    return mems;
+                }
+            );
+
+            module = new Lazy<IModule>(() => ModuleFactory.Instance.RetrieveInstanceForModule(type.Module));
+
             Name = type.Name;
             FullName = type.FullName;
         }
 
-        private void setFields(ICollection<IMember> members)
-        {
-            fields = new ObservableDictionary<string, IField>(new DictionaryCollection<string, IField>(f => f.Name, new FilteredCollection<IField, IMember>(members)));
-            fields.PropertyChanged += fields_PropertyChanged;
-        }
+        private Lazy<ICollection<IMember>> members;
 
-        private DictionaryCollection<string, IMember> members = new DictionaryCollection<string, IMember>(v => v.Name);
-
-        private ObservableDictionary<string, IField> fields;
+        private Lazy<DictionaryCollection<string, IField>> fields;
 
         /// <summary>
         /// Gets or sets the collection of fields that this type contains.
@@ -58,15 +75,7 @@ namespace ReCode
         {
             get
             {
-                if (fields == null)
-                {
-                    members.AddRange(internalType
-                        .GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-                        .Select(f => FieldFactory.Instance.RetrieveInstanceForField(f)));
-
-                    setFields(members.Values);
-                }
-                return fields;
+                return fields.Value;
             }
         }
 
@@ -77,21 +86,12 @@ namespace ReCode
         {
             get
             {
-                return members;
-            }
-            set
-            {
-                members = new DictionaryCollection<string, IMember>(v => v.Name);
-                setFields(members);
+                return members.Value;
             }
         }
 
-        void fields_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            fields[e.PropertyName].DeclaringType = this;
-        }
 
-        private IModule module;
+        private Lazy<IModule> module;
 
         /// <summary>
         /// Gets or sets the module that this type lives in.
@@ -100,11 +100,7 @@ namespace ReCode
         {
             get
             {
-                if (module == null)
-                {
-                    module = ModuleFactory.Instance.RetrieveInstanceForModule(internalType.Module);
-                }
-                return module;
+                return module.Value;
             }
             set
             {
@@ -113,8 +109,8 @@ namespace ReCode
                     throw new ArgumentNullException("value");
                 }
                 Module.Types.Remove(this.Name);
-                module = value;
-                module.Types.Add(this.Name, this);
+                module = new Lazy<IModule>(() => value);
+                module.Value.Types.Add(this.Name, this);
             }
         }
 

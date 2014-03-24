@@ -44,7 +44,7 @@ namespace ReCode
         }
 
         /// <summary>
-        /// Gets or sets the collection of fields that this type contains.
+        /// Gets the dictionary of fields that this type contains.
         /// </summary>
         IDictionary<string, IField> Fields
         {
@@ -52,12 +52,19 @@ namespace ReCode
         }
 
         /// <summary>
-        /// Gets or sets the collection of members that this type contains.
+        /// Gets the dictionary of properties that this type contains,
+        /// </summary>
+        //IDictionary<string, IProperty> Properties
+        //{
+        //    get;
+        //}
+
+        /// <summary>
+        /// Gets the collection of members that this type contains.
         /// </summary>
         ICollection<IMember> Members
         {
             get;
-            set;
         }
 
         /// <summary>
@@ -68,6 +75,5 @@ namespace ReCode
             get;
             set;
         }
-
     }
 }

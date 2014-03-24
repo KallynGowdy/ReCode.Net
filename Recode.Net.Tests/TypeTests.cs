@@ -126,9 +126,56 @@ namespace ReCode.Tests
             IType alternateType = typeof(AlternateTestClass).Edit();
 
             Assert.NotNull(alternateType.Fields["privateInt"]);
-            
+
             //Reset changes
             field.DeclaringType = testType;
+        }
+
+        [TestCase(typeof(TestClass), "NewType")]
+        public void TestManipulateTypeName(Type type, string newName)
+        {
+            IType t = type.Edit();
+
+            Assert.NotNull(t);
+
+            string originalName = t.Name;
+
+            IModule m = t.Module;
+
+            Assert.NotNull(m.Types[originalName]);
+
+            t.Name = newName;
+
+            Assert.NotNull(m.Types[newName]);
+
+            t.Name = originalName;
+        }
+
+        [Test]
+        public void TestManipulateTypeModule()
+        {
+            IType type = typeof(TestClass).Edit();
+
+            Assert.NotNull(type);
+
+            IModule module = type.Module;
+
+            Assert.NotNull(module);
+
+            IAssembly assembly = module.Assembly;
+
+            Assert.NotNull(assembly);
+
+            if (assembly.Modules.Count > 1)
+            {
+                type.Module = assembly.Modules.Last();
+
+                Assert.False(module.Types.Values.Contains(type));
+
+                Assert.True(type.Module.Types.Values.Contains(type));
+
+                type.Module = module;
+            }
         }
     }
 }

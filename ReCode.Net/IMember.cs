@@ -49,5 +49,14 @@ namespace ReCode
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets whether this member is static.
+        /// </summary>
+        bool IsStatic
+        {
+            get;
+            set;
+        }
     }
 }
