@@ -16,21 +16,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ReCode
 {
     /// <summary>
-    /// Defines an interface for editable objects that are restricted based on their access modifiers.
+    /// Defines an interface for objects that can be copied into objects of a different type.
     /// </summary>
-    public interface IAccess
+    /// <typeparam name="T">The type of object that these objects can be copied into.</typeparam>
+    public interface ICopiable<T> where T : class
     {
         /// <summary>
-        /// Gets or sets the access modifier that apply to this object.
+        /// Copies this object into the given other object.
         /// </summary>
-        AccessModifier Access
-        {
-            get;
-            set;
-        }
+        /// <param name="obj">The object that this object's values should be copied into.</param>
+        void CopyTo(T obj);
+
     }
 }

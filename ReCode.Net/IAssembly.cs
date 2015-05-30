@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,14 @@ namespace ReCode
         /// Gets the full name of the assembly.
         /// </summary>
         string FullName
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the location that this assembly lives in on disk.
+        /// </summary>
+        string Location
         {
             get;
         }

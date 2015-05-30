@@ -16,12 +16,22 @@ namespace System.Collections.ObjectModel
     {
         ICollection<TValue> internalCollection;
 
+        /// <summary>
+        /// Creates a new <see cref="DictionaryCollection"/> object that represents a collection of values.
+        /// </summary>
+        /// <param name="keySelector">A function that, given a value, returns a key that represents the value.</param>
+        /// <param name="elements">The list of elements to represent.</param>
         public DictionaryCollection(Func<TValue, TKey> keySelector)
         {
             internalCollection = new Collection<TValue>();
             KeySelector = keySelector;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="DictionaryCollection"/> object that represents the given collection of elements as a dictionary using the given function as a selector for keys.
+        /// </summary>
+        /// <param name="keySelector">A function that, given a value, returns a key that represents the value.</param>
+        /// <param name="elements">The list of elements to represent.</param>
         public DictionaryCollection(Func<TValue, TKey> keySelector, IEnumerable<TValue> elements)
         {
             if (elements == null)
@@ -32,6 +42,11 @@ namespace System.Collections.ObjectModel
             KeySelector = keySelector;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="DictionaryCollection"/> object that represents the given collection of elements as a dictionary using the given function as a selector for keys.
+        /// </summary>
+        /// <param name="keySelector">A function that, given a value, returns a key that represents the value.</param>
+        /// <param name="elements">The list of elements to represent.</param>
         public DictionaryCollection(Func<TValue, TKey> keySelector, ICollection<TValue> elements)
         {
             if (elements == null)
@@ -68,7 +83,7 @@ namespace System.Collections.ObjectModel
         /// <returns>
         /// true if the <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the key; otherwise, false.
         /// </returns>
-        public bool ContainsKey(TKey key)
+        public virtual bool ContainsKey(TKey key)
         {
             foreach (TValue val in internalCollection)
             {
@@ -84,7 +99,7 @@ namespace System.Collections.ObjectModel
         /// Gets an <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </summary>
         /// <returns>An <see cref="T:System.Collections.Generic.ICollection`1" /> containing the keys of the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" />.</returns>
-        public ICollection<TKey> Keys
+        public virtual ICollection<TKey> Keys
         {
             get { return internalCollection.Select(v => KeySelector(v)).ToArray(); }
         }
@@ -97,7 +112,7 @@ namespace System.Collections.ObjectModel
         /// true if the element is successfully removed; otherwise, false.  This method also returns false if <paramref name="key" /> was not found in the original <see cref="T:System.Collections.Generic.IDictionary`2" />.
         /// </returns>
         /// <exception cref="System.NotImplementedException"></exception>
-        public bool Remove(TKey key)
+        public virtual bool Remove(TKey key)
         {
             foreach (TValue val in internalCollection)
             {
@@ -117,7 +132,7 @@ namespace System.Collections.ObjectModel
         /// <returns>
         /// true if the object that implements <see cref="T:System.Collections.Generic.IDictionary`2" /> contains an element with the specified key; otherwise, false.
         /// </returns>
-        public bool TryGetValue(TKey key, out TValue value)
+        public virtual bool TryGetValue(TKey key, out TValue value)
         {
             foreach (TValue val in internalCollection)
             {
@@ -140,7 +155,7 @@ namespace System.Collections.ObjectModel
             get { return internalCollection; }
         }
 
-        public TValue this[TKey key]
+        public virtual TValue this[TKey key]
         {
             get
             {
@@ -179,7 +194,7 @@ namespace System.Collections.ObjectModel
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-        public void Add(KeyValuePair<TKey, TValue> item)
+        public virtual void Add(KeyValuePair<TKey, TValue> item)
         {
             internalCollection.Add(item.Value);
         }
@@ -187,7 +202,7 @@ namespace System.Collections.ObjectModel
         /// <summary>
         /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
-        public void Clear()
+        public virtual void Clear()
         {
             internalCollection.Clear();
         }
@@ -199,12 +214,12 @@ namespace System.Collections.ObjectModel
         /// <returns>
         /// true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.
         /// </returns>
-        public bool Contains(KeyValuePair<TKey, TValue> item)
+        public virtual bool Contains(KeyValuePair<TKey, TValue> item)
         {
             return internalCollection.Contains(item.Value);
         }
 
-        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+        public virtual void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             array = internalCollection.Skip(arrayIndex).ToDictionary(v => KeySelector(v), v => v).ToArray();
         }
@@ -224,7 +239,7 @@ namespace System.Collections.ObjectModel
         /// <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, false.</returns>
         public bool IsReadOnly
         {
-            get { return false; }
+            get { return internalCollection.IsReadOnly; }
         }
 
         /// <summary>
@@ -234,7 +249,7 @@ namespace System.Collections.ObjectModel
         /// <returns>
         /// true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </returns>
-        public bool Remove(KeyValuePair<TKey, TValue> item)
+        public virtual bool Remove(KeyValuePair<TKey, TValue> item)
         {
             return this.Remove(item.Key);
         }
@@ -245,7 +260,7 @@ namespace System.Collections.ObjectModel
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        public virtual IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             return internalCollection.ToDictionary(v => KeySelector(v)).GetEnumerator();
         }
@@ -265,7 +280,7 @@ namespace System.Collections.ObjectModel
         /// Adds the given items to the collection.
         /// </summary>
         /// <param name="items">The items to add to the collection.</param>
-        public void AddRange(IEnumerable<TValue> items)
+        public virtual void AddRange(IEnumerable<TValue> items)
         {
             foreach (TValue val in items)
             {
@@ -277,7 +292,7 @@ namespace System.Collections.ObjectModel
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
-        public void Add(TValue item)
+        public virtual void Add(TValue item)
         {
             internalCollection.Add(item);
         }
@@ -289,12 +304,12 @@ namespace System.Collections.ObjectModel
         /// <returns>
         /// true if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false.
         /// </returns>
-        public bool Contains(TValue item)
+        public virtual bool Contains(TValue item)
         {
             return internalCollection.Contains(item);
         }
 
-        public void CopyTo(TValue[] array, int arrayIndex)
+        public virtual void CopyTo(TValue[] array, int arrayIndex)
         {
             internalCollection.CopyTo(array, arrayIndex);
         }
@@ -306,7 +321,7 @@ namespace System.Collections.ObjectModel
         /// <returns>
         /// true if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, false. This method also returns false if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </returns>
-        public bool Remove(TValue item)
+        public virtual bool Remove(TValue item)
         {
             return internalCollection.Remove(item);
         }

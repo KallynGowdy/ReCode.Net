@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using Mono.Cecil;
 using ReCode.Factories;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,40 @@ namespace ReCode
         public static IType Edit(this Type type)
         {
             return TypeFactory.Instance.RetrieveInstanceForType(type);
+        }
+
+        /// <summary>
+        /// Gets a new <see cref="Mono.Cecil.TypeDefinition"/> object that represents the given type.
+        /// </summary>
+        /// <param name="type">The type that the reference should be retrieved for.</param>
+        /// <returns>Returns a new <see cref="Mono.Cecil.TypeDefinition"/> object</returns>
+        public static TypeDefinition ToTypeDefinition(this IType type)
+        {
+            TypeDefinition t = new TypeDefinition(type.Namespace, type.Name, TypeAttributes.Class);
+            t.Methods.Clear();
+            t.Fields.Clear();
+            t.Properties.Clear();
+
+            foreach (IField f in type.Fields.Values)
+            {
+                t.Fields.Add(f.CreateField(t));
+            }
+
+            foreach (IProperty p in type.Properties.Values)
+            {
+                t.Properties.Add(p.CreateProperty(t));
+            }
+            return t;
+        }
+
+        /// <summary>
+        /// Gets a new <see cref="Mono.Cecil.TypeReference"/> object that points to this type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static TypeReference GetTypeReference(this IType type, ModuleDefinition moduleDefinition)
+        {
+            return new TypeReference(type.Namespace, type.Name, moduleDefinition, moduleDefinition);
         }
     }
 }

@@ -12,10 +12,12 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using Mono.Cecil;
 using ReCode.Factories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -46,6 +48,15 @@ namespace ReCode
             {
                 return Name;
             }
+        }
+
+        /// <summary>
+        /// Gets the location that this assembly lives in on disk.
+        /// </summary>
+        public string Location
+        {
+            get;
+            private set;
         }
 
         private Lazy<ICollection<IModule>> modules;
@@ -85,8 +96,8 @@ namespace ReCode
             {
                 throw new ArgumentNullException("assembly");
             }
-            Name = assembly.FullName;
-
+            Name = assembly.GetName().FullName;
+            Location = assembly.Location;
             modules = new Lazy<ICollection<IModule>>(() => assembly.Modules.Select(m => ModuleFactory.Instance.RetrieveInstanceForModule(m)).ToList());
             types = new Lazy<DictionaryCollection<string, IType>>(() => new DictionaryCollection<string, IType>(t => t.Name, new MergedCollection<IType>(Modules.Select(m => m.Types.Values).ToArray())));
         }
@@ -100,11 +111,7 @@ namespace ReCode
         /// </returns>
         public override bool Equals(object obj)
         {
-            if (obj is IAssembly)
-            {
-                return Equals((IAssembly)obj);
-            }
-            return base.Equals(obj);
+            return obj is IAssembly && Equals((IAssembly)obj);
         }
 
         /// <summary>
@@ -130,5 +137,6 @@ namespace ReCode
         {
             return unchecked(82207 * this.FullName.GetHashCode());
         }
+
     }
 }

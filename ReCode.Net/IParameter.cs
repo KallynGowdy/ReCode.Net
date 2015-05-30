@@ -21,39 +21,28 @@ using Mono.Cecil;
 namespace ReCode
 {
     /// <summary>
-    /// Defines an interface for an editable property.
+    /// Defines an interface for a parameter in a method.
     /// </summary>
-    public interface IProperty : IStorageMember, IAccess, IEquatable<IProperty>
+    public interface IParameter : IMember, IEquatable<IParameter>
     {
         /// <summary>
-        /// Gets or sets the method that retrieves the values from this property.
-        /// Null if this property does not contain a 'get' method.
+        /// Gets or sets the type of objects that this parameter accepts as input.
         /// </summary>
-        IMethod GetMethod
+        IType ParameterType
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the method that writes values to this property.
-        /// Null if this property does not contain a 'set' method.
+        /// Gets or sets the method that this parameter belongs to.
         /// </summary>
-        IMethod SetMethod
+        IMethod Method
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// Gets or sets the type of values that this property manipulates.
-        /// </summary>
-        IType PropertyType
-        {
-            get;
-            set;
-        }
-
-        PropertyDefinition CreateProperty(TypeDefinition typeDefinition);
+        ParameterDefinition CreateParameter(TypeDefinition typeDefinition);
     }
 }

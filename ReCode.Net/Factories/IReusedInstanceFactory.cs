@@ -26,7 +26,7 @@ namespace ReCode.Factories
     /// <example>
     /// Objects of these types provide the same object for the same input. For example:
     /// <code>
-    /// IReusedInstanceFactory{Tyoe, IType} factory = TypeFactory.Instance; // Get the singleton instance
+    /// IReusedInstanceFactory{Type, IType} factory = TypeFactory.Instance; // Get the singleton instance
     /// 
     /// IType t1 = factory.GetInstance(typeof(int));
     /// IType t2 = factory.GetInstance(typeof(int));

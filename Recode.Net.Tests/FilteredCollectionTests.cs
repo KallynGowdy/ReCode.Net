@@ -11,51 +11,51 @@ namespace ReCode.Tests
     [TestFixture]
     public class FilteredCollectionTests
     {
-        [Test]
-        public void TestFiltering()
+        [TestCase(new object[] { "Cool", 458, 79843, 1, 4984.58f, "Ho!" }, new string[] { "Hello", "Oh My!" })]
+        public void TestAdd(object[] objects, string[] newObjects)
         {
-            ICollection<object> objects = new List<object>
+            ICollection<object> collection = objects.ToList();
+
+            FilteredCollection<string, object> filtered = new FilteredCollection<string, object>(collection);
+
+            foreach (string str in newObjects)
             {
-                new object(),
-                "Hello!",
-                50.2,
-                14.2f,
-                13,
-                "Wow!",
-                "Cool"
-            };
+                filtered.Add(str);
+            }
+
+            Assert.True(objects.Concat(newObjects).SequenceEqual(collection));
+        }
+
+        [TestCase(3, "Hello!", 50.2, 14.2f, 13, "Wow!", "Cool")]
+        public void TestFiltering(int expectedCount, params object[] objects)
+        {
+            ICollection<object> collection = objects.ToList();
 
             FilteredCollection<string, object> filtered = new FilteredCollection<string, object>(objects);
 
-            Assert.AreEqual(3, filtered.Count);
+            Assert.AreEqual(expectedCount, filtered.Count);
 
-            Assert.AreEqual("Hello!", filtered.First());
-            Assert.AreEqual("Wow!", filtered.ElementAt(1));
-            Assert.AreEqual("Cool", filtered.Last());
+            Assert.True(objects.OfType<string>().SequenceEqual(filtered));
         }
 
-        [Test]
-        public void TestContains()
+        [TestCase(new object[] { 459, 16, 1.45f, "Oh My!", 14.2f, 12.897, "Some Other Stuff" }, new object[] { "Oh My!" })]
+        public void TestContains(object[] objects, object[] contains)
         {
-            ICollection<object> objects = new List<object>
+            ICollection<object> collection = objects.ToList();
+
+            ICollection<string> filtered = new FilteredCollection<string, object>(collection);
+
+            Assert.AreEqual(objects.OfType<string>().Count(), filtered.Count);
+
+            foreach (object obj in contains)
             {
-                new object(),
-                459,
-                16,
-                1.45f,
-                "Oh My!",
-                14.2f,
-                12.897,
-                "Some Other Stuff"
-            };
+                Assert.True(filtered.Contains(obj), string.Format("The filtered collection does not contain: \"{0}\" when it should.", obj));
+            }
 
-            ICollection<string> filtered = new FilteredCollection<string, object>(objects);
-
-            Assert.AreEqual(2, filtered.Count);
-
-            Assert.True(filtered.Contains("Oh My!"), "The filtered collection does not contain: \"Oh My!\" when it should.");
-
-            Assert.That(filtered, Is.Not.Contains(459));
+            foreach (object obj in collection.Where(o => !(o is string)))
+            {
+                Assert.That(filtered, Is.Not.Contains(obj));
+            }
         }
     }
 }

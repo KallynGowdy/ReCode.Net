@@ -16,21 +16,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ReCode
 {
     /// <summary>
-    /// Defines an interface for editable objects that are restricted based on their access modifiers.
+    /// Defines a generic interface for an object that saves it's changes.
     /// </summary>
-    public interface IAccess
+    /// <typeparam name="TSaver">The type of object that allows the object to apply it's values.</typeparam>
+    public interface IApplyChanges<TSaver>
     {
         /// <summary>
-        /// Gets or sets the access modifier that apply to this object.
+        /// Causes this object to apply it's values using the given object as output.
         /// </summary>
-        AccessModifier Access
-        {
-            get;
-            set;
-        }
+        /// <param name="saver">The object to use for output.</param>
+        void Apply(TSaver saver);
     }
 }

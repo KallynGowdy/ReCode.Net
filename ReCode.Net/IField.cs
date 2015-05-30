@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,5 +34,11 @@ namespace ReCode
             set;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="FieldDefinition"/> object from this object.
+        /// </summary>
+        /// <param name="parentType">The type that this field belongs to.</param>
+        /// <returns>Returns a new <see cref="FieldDefinition"/> object.</returns>
+        FieldDefinition CreateField(TypeDefinition parentType);
     }
 }

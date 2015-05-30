@@ -22,16 +22,16 @@ using System.Threading.Tasks;
 namespace ReCode.Factories
 {
     /// <summary>
-    /// Defines a factory that retrieves <see cref="ReCode.IAssembly"/> objects.
+    /// Defines a factory that retrieves <see cref="ReCode.IProperty"/> objects.
     /// </summary>
-    public class AssemblyFactory : ReusedInstanceFactoryBase<Assembly, IAssembly>
+    public class PropertyFactory : ReusedInstanceFactoryBase<PropertyInfo, IProperty>
     {
-        private static readonly Lazy<AssemblyFactory> lazy = new Lazy<AssemblyFactory>(() => new AssemblyFactory());
+        private static readonly Lazy<PropertyFactory> lazy = new Lazy<PropertyFactory>(() => new PropertyFactory());
 
         /// <summary>
-        /// Gets the singleton instance of this factory.
+        /// Gets the singleton instance of this <see cref="ReCode.Factories.PropertyFactory"/>.
         /// </summary>
-        public static AssemblyFactory Instance
+        public static PropertyFactory Instance
         {
             get
             {
@@ -39,8 +39,13 @@ namespace ReCode.Factories
             }
         }
 
-        protected AssemblyFactory() : base(a => new EditableAssembly(a))
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyFactory"/> class.
+        /// </summary>
+        protected PropertyFactory()
+            : base(p => new EditableProperty(p))
         {
+
         }
 
         /// <summary>
@@ -48,13 +53,13 @@ namespace ReCode.Factories
         /// </summary>
         /// <param name="assembly">The assembly that the instance should be retrieved for.</param>
         /// <returns>Returns an <see cref="ReCode.IAssembly"/> object that represents the given assembly.</returns>
-        public IAssembly RetrieveInstanceForAssembly(Assembly assembly)
+        public IProperty RetrieveInstanceForProperty(PropertyInfo property)
         {
-            if (assembly == null)
+            if (property == null)
             {
-                throw new ArgumentNullException("assembly");
+                throw new ArgumentNullException("property");
             }
-            return base.GetInstance(assembly);
+            return base.GetInstance(property);
         }
 
         /// <summary>
@@ -62,11 +67,11 @@ namespace ReCode.Factories
         /// </summary>
         /// <param name="arg">The value used to initialize the result value.</param>
         /// <returns>Returns an object that is the same reference for each call with the same argument.</returns>
-        public override IAssembly GetInstance(Assembly arg)
+        public override IProperty GetInstance(PropertyInfo arg)
         {
             if (arg == null)
             {
-                throw new ArgumentNullException("arg");
+                throw new ArgumentNullException("property");
             }
             return base.GetInstance(arg);
         }

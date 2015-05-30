@@ -16,21 +16,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace ReCode
+namespace System
 {
     /// <summary>
-    /// Defines an interface for editable objects that are restricted based on their access modifiers.
+    /// Defines an interface for objects that are convertable to a specific type.
     /// </summary>
-    public interface IAccess
+    /// <typeparam name="T">The type that these objects can convert to.</typeparam>
+    public interface IConvertible<out T>
     {
         /// <summary>
-        /// Gets or sets the access modifier that apply to this object.
+        /// Converts this object into an object specified by the type parameter.
         /// </summary>
-        AccessModifier Access
-        {
-            get;
-            set;
-        }
+        /// <returns></returns>
+        T Convert();
     }
 }

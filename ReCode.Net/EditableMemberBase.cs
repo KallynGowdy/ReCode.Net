@@ -18,6 +18,10 @@ namespace ReCode
         /// <param name="info">The <see cref="System.Reflection.MemberInfo"/> object that contains information about the current member.</param>
         protected EditableMemberBase(MemberInfo info)
         {
+            if (info == null)
+            {
+                throw new ArgumentNullException("info");
+            }
             this.Name = info.Name;
             this.declaringType = new Lazy<IType>(() => info.DeclaringType.Edit());
         }
@@ -40,7 +44,7 @@ namespace ReCode
         /// <summary>
         /// Gets or sets the name of this member.
         /// </summary>
-        public string Name
+        public virtual string Name
         {
             get;
             set;
@@ -49,7 +53,7 @@ namespace ReCode
         /// <summary>
         /// Gets or set whether this member is static.
         /// </summary>
-        public bool IsStatic
+        public virtual bool IsStatic
         {
             get;
             set;
@@ -85,7 +89,7 @@ namespace ReCode
         /// Gets the full name of the member.
         /// </summary>
         /// <exception cref="System.InvalidOperationException">The full name of the field cannot be retrieved because it is not contained by a type. (i.e. DeclaringType is null)</exception>
-        public string FullName
+        public virtual string FullName
         {
             get
             {

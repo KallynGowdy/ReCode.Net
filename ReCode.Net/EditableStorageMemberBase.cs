@@ -19,6 +19,11 @@ namespace ReCode
         protected EditableStorageMemberBase(FieldInfo field)
             : base(field)
         {
+            if (field == null)
+            {
+                throw new ArgumentNullException("field");
+            }
+
             this.StoredType = field.FieldType.Edit();
 
             this.GetFunction = r => field.GetValue(r);
@@ -29,28 +34,37 @@ namespace ReCode
 
             ReadAccess = access;
             WriteAccess = access;
+
+            this.IsStatic = field.IsStatic;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditableStorageMemberBase"/> class.
         /// </summary>
-        /// <param name="prop">The property that this member represents.</param>
-        protected EditableStorageMemberBase(PropertyInfo prop)
-            : base(prop)
+        /// <param name="property">The property that this member represents.</param>
+        protected EditableStorageMemberBase(PropertyInfo property)
+            : base(property)
         {
-            this.StoredType = prop.PropertyType.Edit();
+            if (property == null)
+            {
+                throw new ArgumentNullException("property");
+            }
+
+            this.StoredType = property.PropertyType.Edit();
 
             initDefaultAccessModifiers();
 
-            if (prop.CanRead)
+            if (property.CanRead)
             {
-                this.GetFunction = r => prop.GetValue(r);
-                ReadAccess = prop.SetMethod.GetAccessModifiers();
+                this.GetFunction = r => property.GetValue(r);
+                ReadAccess = property.GetMethod.GetAccessModifiers();
+                this.IsStatic = property.GetMethod.IsStatic;
             }
-            if (prop.CanWrite)
+            if (property.CanWrite)
             {
-                this.SetFunction = (r, v) => prop.SetValue(r, v);
-                WriteAccess = prop.SetMethod.GetAccessModifiers();
+                this.SetFunction = (r, v) => property.SetValue(r, v);
+                WriteAccess = property.SetMethod.GetAccessModifiers();
+                this.IsStatic = property.SetMethod.IsStatic;
             }
         }
 
@@ -86,6 +100,7 @@ namespace ReCode
         {
             ReadAccess = AccessModifier.Private;
             WriteAccess = AccessModifier.Private;
+            IsStatic = false;
         }
 
         /// <summary>
@@ -169,7 +184,8 @@ namespace ReCode
             return other != null &&
                 this.CanRead == other.CanRead &&
                 this.CanWrite == other.CanWrite &&
-                this.FullName.Equals(other.FullName);
+                this.Name.Equals(other.Name) &&
+                this.StoredType.Equals(other.StoredType);
         }
 
         /// <summary>

@@ -53,46 +53,46 @@ namespace ReCode.Tests
 
         }
 
-        [Test]
-        public void TestManipulateFieldAccess()
+        [TestCase("privateInt")]
+        public void TestManipulateFieldAccess(string fieldName)
         {
             IType testType = typeof(TestClass).Edit();
 
-            Assert.AreEqual(AccessModifier.Private, testType.Fields["privateInt"].Access);
+            Assert.AreEqual(AccessModifier.Private, testType.Fields[fieldName].Access);
 
-            testType.Fields["privateInt"].Access = AccessModifier.Public;
+            testType.Fields[fieldName].Access = AccessModifier.Public;
 
-            Assert.AreEqual(AccessModifier.Public, testType.Fields["privateInt"].Access);
+            Assert.AreEqual(AccessModifier.Public, testType.Fields[fieldName].Access);
 
             //Reset changes
-            testType.Fields["privateInt"].Access = AccessModifier.Private;
+            testType.Fields[fieldName].Access = AccessModifier.Private;
         }
 
-        [Test]
-        public void TestManipulateFieldName()
+        [TestCase("privateInt", "reallyPrivateInt")]
+        public void TestManipulateFieldName(string fieldName, string newName)
         {
             IType testType = typeof(TestClass).Edit();
 
-            Assert.NotNull(testType.Fields["privateInt"]);
+            Assert.NotNull(testType.Fields[fieldName]);
 
-            Assert.AreEqual("privateInt", testType.Fields["privateInt"].Name);
+            Assert.AreEqual(fieldName, testType.Fields[fieldName].Name);
 
-            testType.Fields["privateInt"].Name = "reallyPrivateInt";
+            testType.Fields[fieldName].Name = newName;
 
-            Assert.Null(testType.Fields["privateInt"]);
+            Assert.Null(testType.Fields[fieldName]);
 
-            Assert.AreEqual("reallyPrivateInt", testType.Fields["reallyPrivateInt"].Name);
+            Assert.AreEqual(newName, testType.Fields[newName].Name);
 
             //Reset changes
-            testType.Fields["reallyPrivateInt"].Name = "privateInt";
+            testType.Fields[newName].Name = fieldName;
         }
 
-        [Test]
-        public void TestManipulateFieldType()
+        [TestCase("privateInt")]
+        public void TestManipulateFieldType(string fieldName)
         {
             IType testType = typeof(TestClass).Edit();
 
-            IField testTypeField = testType.Fields["privateInt"];
+            IField testTypeField = testType.Fields[fieldName];
 
             Assert.NotNull(testTypeField);
 
@@ -106,48 +106,44 @@ namespace ReCode.Tests
             testTypeField.FieldType = typeof(int).Edit();
         }
 
-        [Test]
-        public void TestManipulateFieldDeclaringType()
+        [TestCase("privateInt")]
+        [TestCase("PublicReadOnlyInt")]
+        public void TestManipulateMemberDeclaringType(string memberName)
         {
             IType testType = typeof(TestClass).Edit();
 
-            IField field = testType.Fields["privateInt"];
+            IMember[] members = testType.Members.Where(m => m.Name == memberName).ToArray();
+            foreach (IMember member in members)
+            {
+                Assert.NotNull(member);
+                Assert.AreEqual(testType, member.DeclaringType);
 
-            Assert.NotNull(field);
+                member.DeclaringType = typeof(AlternateTestClass).Edit();
 
-            Assert.AreEqual(testType, field.DeclaringType);
+                IField goneField = testType.Fields[memberName];
+                Assert.Null(goneField);
 
-            field.DeclaringType = typeof(AlternateTestClass).Edit();
+                IType alternateType = typeof(AlternateTestClass).Edit();
+                Assert.NotNull(alternateType.Members.FirstOrDefault(m => m.Name == memberName));
 
-            IField goneField = testType.Fields["privateInt"];
-
-            Assert.Null(goneField);
-
-            IType alternateType = typeof(AlternateTestClass).Edit();
-
-            Assert.NotNull(alternateType.Fields["privateInt"]);
-
-            //Reset changes
-            field.DeclaringType = testType;
+                //Reset changes
+                member.DeclaringType = testType;
+            }
         }
 
         [TestCase(typeof(TestClass), "NewType")]
         public void TestManipulateTypeName(Type type, string newName)
         {
             IType t = type.Edit();
-
             Assert.NotNull(t);
 
             string originalName = t.Name;
-
             IModule m = t.Module;
-
             Assert.NotNull(m.Types[originalName]);
 
             t.Name = newName;
 
             Assert.NotNull(m.Types[newName]);
-
             t.Name = originalName;
         }
 
@@ -155,27 +151,22 @@ namespace ReCode.Tests
         public void TestManipulateTypeModule()
         {
             IType type = typeof(TestClass).Edit();
-
             Assert.NotNull(type);
 
             IModule module = type.Module;
-
             Assert.NotNull(module);
 
             IAssembly assembly = module.Assembly;
-
             Assert.NotNull(assembly);
 
             if (assembly.Modules.Count > 1)
             {
                 type.Module = assembly.Modules.Last();
-
                 Assert.False(module.Types.Values.Contains(type));
-
                 Assert.True(type.Module.Types.Values.Contains(type));
-
                 type.Module = module;
             }
         }
+
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Mono.Cecil;
 
 namespace ReCode
 {
@@ -187,6 +188,21 @@ namespace ReCode
         public override string ToString()
         {
             return string.Format("{0} {1}", FieldType, Name);
+        }
+
+
+        /// <summary>
+        /// Creates a new <see cref="FieldDefinition" /> object from this object.
+        /// </summary>
+        /// <param name="parentType">The type that this field belongs to.</param>
+        /// <returns>
+        /// Returns a new <see cref="FieldDefinition" /> object.
+        /// </returns>
+        public FieldDefinition CreateField(TypeDefinition parentType)
+        {
+            FieldDefinition field = new FieldDefinition(this.Name, this.GetMonoFieldAttributes(), this.FieldType.GetTypeReference(parentType.Module));
+            
+            return field;
         }
     }
 }

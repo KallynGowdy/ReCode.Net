@@ -24,6 +24,8 @@ namespace ReCode.Factories
     /// <summary>
     /// Defines a class that provides a base implementation of IReusedInstanceFactory{TArg, TReturn}.
     /// </summary>
+    /// <typeparam name="TArg">The type of values that determine which instance of a .</typeparam>
+    /// <typeparam name="TReturn">The type of objects that are created and reused by this factory.</typeparam>
     public class ReusedInstanceFactoryBase<TArg, TReturn> : IReusedInstanceFactory<TArg, TReturn>
     {
         /// <summary>
@@ -69,8 +71,14 @@ namespace ReCode.Factories
             Lazy<TReturn> instance;
             if (!Instances.TryGetValue(arg, out instance))
             {
-                instance = new Lazy<TReturn>(() => Constructor(arg));
-                Instances.TryAdd(arg, instance);
+                lock (Instances)
+                {
+                    if (!Instances.TryGetValue(arg, out instance))
+                    {
+                        instance = new Lazy<TReturn>(() => Constructor(arg));
+                        Instances.TryAdd(arg, instance);
+                    }
+                }
             }
             return instance.Value;
         }

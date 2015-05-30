@@ -12,6 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
+using Mono.Cecil;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,8 +25,17 @@ namespace ReCode
     /// <summary>
     /// Defines an interface for objects that represent an editable type.
     /// </summary>
-    public interface IType
+    public interface IType : IEquatable<IType>
     {
+        /// <summary>
+        /// Gets or sets the namespace that this type belongs to.
+        /// </summary>
+        string Namespace
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Gets the full name of the type.
         /// </summary>
@@ -54,10 +64,10 @@ namespace ReCode
         /// <summary>
         /// Gets the dictionary of properties that this type contains,
         /// </summary>
-        //IDictionary<string, IProperty> Properties
-        //{
-        //    get;
-        //}
+        IDictionary<string, IProperty> Properties
+        {
+            get;
+        }
 
         /// <summary>
         /// Gets the collection of members that this type contains.
