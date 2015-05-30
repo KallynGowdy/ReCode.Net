@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Mono.Cecil;
+using ReCode.Net.Collections;
 
 namespace ReCode
 {

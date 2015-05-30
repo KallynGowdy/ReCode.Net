@@ -13,12 +13,11 @@
 //    limitations under the License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace System.Collections.ObjectModel
+namespace ReCode.Net.Collections
 {
     /// <summary>
     /// Defines a class for a collection that contains objects from multiple mutable collections.

@@ -1,17 +1,13 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
+using Xunit;
 
-namespace ReCode.Tests
+namespace ReCode.Net.Collections.Tests
 {
-    [TestFixture]
     public class FilteredCollectionTests
     {
-        [TestCase(new object[] { "Cool", 458, 79843, 1, 4984.58f, "Ho!" }, new string[] { "Hello", "Oh My!" })]
+        [Theory]
+        [InlineData(new object[] { "Cool", 458, 79843, 1, 4984.58f, "Ho!" }, new string[] { "Hello", "Oh My!" })]
         public void TestAdd(object[] objects, string[] newObjects)
         {
             ICollection<object> collection = objects.ToList();
@@ -26,26 +22,28 @@ namespace ReCode.Tests
             Assert.True(objects.Concat(newObjects).SequenceEqual(collection));
         }
 
-        [TestCase(3, "Hello!", 50.2, 14.2f, 13, "Wow!", "Cool")]
+        [Theory]
+        [InlineData(3, new object[] { "Hello!", 50.2, 14.2f, 13, "Wow!", "Cool" })]
         public void TestFiltering(int expectedCount, params object[] objects)
         {
             ICollection<object> collection = objects.ToList();
 
             FilteredCollection<string, object> filtered = new FilteredCollection<string, object>(objects);
 
-            Assert.AreEqual(expectedCount, filtered.Count);
+            Assert.Equal(expectedCount, filtered.Count);
 
             Assert.True(objects.OfType<string>().SequenceEqual(filtered));
         }
 
-        [TestCase(new object[] { 459, 16, 1.45f, "Oh My!", 14.2f, 12.897, "Some Other Stuff" }, new object[] { "Oh My!" })]
+        [Theory]
+        [InlineData(new object[] { 459, 16, 1.45f, "Oh My!", 14.2f, 12.897, "Some Other Stuff" }, new object[] { "Oh My!" })]
         public void TestContains(object[] objects, object[] contains)
         {
             ICollection<object> collection = objects.ToList();
 
             ICollection<string> filtered = new FilteredCollection<string, object>(collection);
 
-            Assert.AreEqual(objects.OfType<string>().Count(), filtered.Count);
+            Assert.Equal(objects.OfType<string>().Count(), filtered.Count);
 
             foreach (object obj in contains)
             {
@@ -54,7 +52,7 @@ namespace ReCode.Tests
 
             foreach (object obj in collection.Where(o => !(o is string)))
             {
-                Assert.That(filtered, Is.Not.Contains(obj));
+                Assert.DoesNotContain(obj, filtered);
             }
         }
     }

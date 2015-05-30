@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.22823.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReCode.Net", "ReCode.Net\ReCode.Net.csproj", "{C5359FF8-DFEA-4B6A-B3DC-1421EDE1EF2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReCode.Net.Tests", "Recode.Net.Tests\ReCode.Net.Tests.csproj", "{DB279FCE-D1DD-4846-94A7-C66374ABA36B}"
@@ -11,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6EDAA4
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReCode.Net.Collections", "ReCode.Net.Collections\ReCode.Net.Collections.csproj", "{892BD0AF-54CB-43B9-B850-D9D70BF12A5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReCode.Net.Collections.Tests", "ReCode.Net.Collections.Tests\ReCode.Net.Collections.Tests.csproj", "{1AF4461F-0783-41E2-8175-1369D6AB0081}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +32,14 @@ Global
 		{DB279FCE-D1DD-4846-94A7-C66374ABA36B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB279FCE-D1DD-4846-94A7-C66374ABA36B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB279FCE-D1DD-4846-94A7-C66374ABA36B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{892BD0AF-54CB-43B9-B850-D9D70BF12A5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{892BD0AF-54CB-43B9-B850-D9D70BF12A5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{892BD0AF-54CB-43B9-B850-D9D70BF12A5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{892BD0AF-54CB-43B9-B850-D9D70BF12A5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AF4461F-0783-41E2-8175-1369D6AB0081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AF4461F-0783-41E2-8175-1369D6AB0081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AF4461F-0783-41E2-8175-1369D6AB0081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AF4461F-0783-41E2-8175-1369D6AB0081}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

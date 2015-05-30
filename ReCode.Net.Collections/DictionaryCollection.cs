@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace System.Collections.ObjectModel
+namespace ReCode.Net.Collections
 {
     /// <summary>
     /// Defines a class that wraps a collection as a dictionary.

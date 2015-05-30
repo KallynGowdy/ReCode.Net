@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace System.Collections.ObjectModel
+namespace ReCode.Net.Collections
 {
     /// <summary>
     /// Defines a dictionary that sends events when manipluated.
@@ -15,11 +14,7 @@ namespace System.Collections.ObjectModel
     [Serializable]
     public class ObservableDictionary<TKey, TValue> :
         IDictionary<TKey, TValue>,
-        IEnumerable<KeyValuePair<TKey, TValue>>,
-        ICollection<KeyValuePair<TKey, TValue>>,
         IDictionary,
-        ICollection,
-        IEnumerable,
         ISerializable,
         INotifyCollectionChanged,
         INotifyPropertyChanged

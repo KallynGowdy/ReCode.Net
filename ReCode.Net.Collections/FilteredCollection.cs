@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace System.Collections.ObjectModel
+namespace ReCode.Net.Collections
 {
     /// <summary>
     /// Defines a collection where each element is cast to/from the expected value.

@@ -31,6 +31,14 @@ namespace ReCode.Tests
         {
             private int privateInt;
 
+            public int PublicInt;
+
+            public int PublicReadPrivateSetInt
+            {
+                get;
+                private set;
+            }
+
             public int PublicReadOnlyInt
             {
                 get
@@ -167,6 +175,5 @@ namespace ReCode.Tests
                 type.Module = module;
             }
         }
-
     }
 }

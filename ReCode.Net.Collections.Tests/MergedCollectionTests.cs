@@ -1,17 +1,12 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xunit;
 
-namespace ReCode.Tests
+namespace ReCode.Net.Collections.Tests
 {
-    [TestFixture]
     public class MergedCollectionTests
     {
-        [Test]
+        [Fact]
         public void TestRetrieveItemsInSequence()
         {
             ICollection<int> first = new List<int>
@@ -44,7 +39,8 @@ namespace ReCode.Tests
             Assert.True(merged.Skip(first.Count + second.Count).SequenceEqual(third));
         }
 
-        [TestCase(5, 10, 15, 20)]
+        [Theory]
+        [InlineData(new[] { 5, 10, 15, 20 })]
         public void TestAddItems(params int[] items)
         {
             ICollection<int> first = new List<int>();
